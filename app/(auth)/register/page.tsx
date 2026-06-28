@@ -247,32 +247,6 @@ export default function RegisterPage() {
             <label className="mb-2 block text-sm font-medium">
               Tỉnh / Thành phố
             </label>
-            {/* <select
-              className="w-full rounded border bg-white px-3 py-2 outline-none focus:border-black"
-              value={`${provinceCode}|${provinceName}`}
-              onChange={(e) => {
-                const [code, name] = e.target.value.split("|");
-                setProvinceCode(code || "");
-                setProvinceName(name || "");
-
-                setDistricts([]);
-                setDistrictCode("");
-                setDistrictName("");
-
-                setWards([]);
-                setWardName("");
-              }}
-            >
-              <option value="">Chọn tỉnh / thành phố</option>
-              {provinces.map((province) => (
-                <option
-                  key={province.code}
-                  value={`${province.code}|${province.name}`}
-                >
-                  {province.name}
-                </option>
-              ))}
-            </select> */}
 
             <LocationSelect
               list={provinces}
@@ -293,28 +267,7 @@ export default function RegisterPage() {
             <label className="mb-2 block text-sm font-medium">
               Quận / Huyện
             </label>
-            {/* <select
-              className="w-full rounded border bg-white px-3 py-2 outline-none focus:border-black"
-              value={`${districtCode}|${districtName}`}
-              onChange={(e) => {
-                const [code, name] = e.target.value.split("|");
-                setDistrictCode(code || "");
-                setDistrictName(name || "");
 
-                setWards([]);
-                setWardName("");
-              }}
-            >
-              <option value="">Chọn quận / huyện</option>
-              {districts.map((district) => (
-                <option
-                  key={district.code}
-                  value={`${district.code}|${district.name}`}
-                >
-                  {district.name}
-                </option>
-              ))}
-            </select> */}
             <LocationSelect
               list={districts}
               divisionName={districtName}
@@ -331,18 +284,7 @@ export default function RegisterPage() {
             <label className="mb-2 block text-sm font-medium">
               Phường / Xã
             </label>
-            {/* <select
-              className="w-full rounded border bg-white px-3 py-2 outline-none focus:border-black"
-              value={wardName}
-              onChange={(e) => setWardName(e.target.value)}
-            >
-              <option value="">Chọn phường / xã</option>
-              {wards.map((ward) => (
-                <option key={ward.code} value={ward.name}>
-                  {ward.name}
-                </option>
-              ))}
-            </select> */}
+
             <LocationSelect
               list={wards}
               divisionName={wardName}
