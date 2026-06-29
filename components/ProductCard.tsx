@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type ProductCardProps = {
   image: string;
+  slug: string;
   name: string;
   price: number;
   colorCount: number;
@@ -10,13 +12,17 @@ type ProductCardProps = {
 
 export default function ProductCard({
   image,
+  slug,
   name,
   price,
   colorCount,
   sizeCount,
 }: ProductCardProps) {
   return (
-    <div className="group rounded-xl bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <Link
+      href={`/products/${slug}`}
+      className="group rounded-xl bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+    >
       <div className="rounded-xl relative aspect-14/15 overflow-hidden">
         <Image
           src={image}
@@ -38,9 +44,9 @@ export default function ProductCard({
         </h3>
 
         <p>
-          <strong>{price.toLocaleString("vi-VN")}đ</strong>
+          <strong>{price.toLocaleString("vi-VN")}₫</strong>
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

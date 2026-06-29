@@ -10,8 +10,9 @@ export default function ProductList({ products }: { products: Product[] }) {
         <ProductCard
           key={index}
           image={product.thumbnailUrl}
+          slug={product.slug}
           name={product.name}
-          price={product.price} 
+          price={product.price}
           colorCount={product.colorCount}
           sizeCount={product.sizeCount}
         />

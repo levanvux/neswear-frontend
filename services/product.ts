@@ -42,6 +42,7 @@ export async function getProducts(query: ProductQuery = {}) {
   }>(`/products${queryString ? `?${queryString}` : ""}`);
 }
 
-export async function getProductById(id: number) {
-  return fetchApi<ProductDetail>(`/products/${id}`);
+export async function getProductBySlug(slug: string) {
+  await new Promise((res) => setTimeout(res, 5000));
+  return fetchApi<ProductDetail>(`/products/${slug}`);
 }

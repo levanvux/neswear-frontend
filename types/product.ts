@@ -11,6 +11,7 @@ export interface ProductQuery {
 export interface ProductCard {
   id: number;
   name: string;
+  slug: string;
   price: number;
   thumbnailKey: string;
   thumbnailUrl: string;
@@ -36,6 +37,7 @@ export interface ProductVariant {
 export interface ProductDetail {
   id: number;
   name: string;
+  slug: string;
   price: number;
   category: string;
   thumbnailKey: string;
