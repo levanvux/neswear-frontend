@@ -1,14 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LogoutConfirmation from "@/components/LogoutConfirmation";
 
 export default function ProfilePage() {
-  const router = useRouter();
+  const { user, loading } = useAuth();
 
-  const { user, loading, handleLogout } = useAuth();
+  const [openLogout, setOpenLogout] = useState(false);
 
   if (loading) {
     return (
@@ -19,7 +20,6 @@ export default function ProfilePage() {
   }
 
   if (!user) {
-    router.push("/login?redirect=/profile");
     return null;
   }
 
@@ -88,29 +88,29 @@ export default function ProfilePage() {
           <div className="flex flex-col md:flex-row justify-end gap-3 border-t pt-6">
             <button
               onClick={() => toast("Chức năng sẽ được cập nhật sau.")}
-              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-blue-600"
+              className="rounded-lg bg-blue-500 px-5 py-2 text-white transition hover:bg-blue-600"
             >
               Chỉnh sửa
             </button>
 
             <button
               onClick={() => toast("Chức năng sẽ được cập nhật sau.")}
-              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-blue-600"
+              className="rounded-lg bg-blue-500 px-5 py-2 text-white transition hover:bg-blue-600"
             >
               Đổi mật khẩu
             </button>
 
             <button
-              onClick={async () => {
-                if (!confirm("Bạn có chắc chắn muốn đăng xuất?")) return;
-
-                await handleLogout();
-                toast.success("Đã đăng xuất");
-              }}
+              onClick={() => setOpenLogout(true)}
               className="rounded-lg bg-red-600 px-5 py-2 text-white transition hover:bg-red-700"
             >
               Đăng xuất
             </button>
+
+            <LogoutConfirmation
+              open={openLogout}
+              onOpenChange={setOpenLogout}
+            />
           </div>
         </div>
       </div>

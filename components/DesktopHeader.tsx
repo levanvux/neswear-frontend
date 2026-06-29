@@ -4,12 +4,12 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
 import { FiHeart, FiShoppingBag, FiUser } from "react-icons/fi";
-import toast from "react-hot-toast";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 
 import SearchSheet from "./SearchSheet";
+import LogoutConfirmation from "./LogoutConfirmation";
 import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -17,9 +17,11 @@ const montserrat = Montserrat({
 });
 
 export default function DesktopHeader() {
-  const { user, handleLogout } = useAuth();
+  const { user } = useAuth();
 
   const [openUserActions, setOpenUserActions] = useState(false);
+
+  const [openLogout, setOpenLogout] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -162,14 +164,9 @@ export default function DesktopHeader() {
                     </Link>
                     <button
                       className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={async () => {
-                        if (!confirm("Bạn có muốn đăng xuất hay không?")) {
-                          return;
-                        }
-
-                        await handleLogout();
+                      onClick={() => {
                         setOpenUserActions(false);
-                        toast.success("Đã đăng xuất");
+                        setOpenLogout(true);
                       }}
                     >
                       Đăng xuất
@@ -178,6 +175,11 @@ export default function DesktopHeader() {
                 )}
               </div>
             )}
+
+            <LogoutConfirmation
+              open={openLogout}
+              onOpenChange={setOpenLogout}
+            />
           </div>
         </div>
       </div>
