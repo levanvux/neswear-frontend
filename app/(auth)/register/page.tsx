@@ -86,11 +86,14 @@ export default function RegisterPage() {
       return;
     }
 
+    if (password.length < 8) {
+      toast.error("Mật khẩu phải có ít nhất 8 ký tự.");
+      return;
+    }
+
     const goodPassword = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
     if (!goodPassword.test(password)) {
-      toast.error(
-        "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ, số và ký tự đặc biệt.",
-      );
+      toast.error("Mật khẩu phải bao gồm chữ, số và ký tự đặc biệt.");
       return;
     }
 
