@@ -27,7 +27,7 @@ export default function HeroSlider() {
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-[15rem] md:h-[30rem] lg:h-[40rem] hover:cursor-pointer">
+            <div className="relative w-full h-60 md:h-120 lg:h-160 hover:cursor-pointer">
               <Image
                 src={banner}
                 alt={`Banner ${index + 1}`}
