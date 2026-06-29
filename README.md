@@ -1,6 +1,6 @@
 ## How to run it
 
-1. Create `.env` file from the `.env.example file` (replace with your backend url)
+1. Create `.env` file from the `.env.example` file (replace with your backend url)
 
 2. Install dependencies:
 
