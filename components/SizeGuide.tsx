@@ -62,7 +62,7 @@ export default function SizeGuide({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="text-sm underline   text-gray-800">
+        <button className="text-sm underline text-gray-800 cursor-pointer">
           Hướng dẫn chọn kích thước
         </button>
       </DialogTrigger>

@@ -88,14 +88,14 @@ export default function ProfilePage() {
           <div className="flex flex-col md:flex-row justify-end gap-3 border-t pt-6">
             <button
               onClick={() => toast("Chức năng sẽ được cập nhật sau.")}
-              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-gray-100"
+              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-blue-600"
             >
               Chỉnh sửa
             </button>
 
             <button
               onClick={() => toast("Chức năng sẽ được cập nhật sau.")}
-              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-gray-100"
+              className="rounded-lg bg-blue-500 text-white px-5 py-2 transition hover:bg-blue-600"
             >
               Đổi mật khẩu
             </button>

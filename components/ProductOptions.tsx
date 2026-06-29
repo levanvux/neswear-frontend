@@ -101,7 +101,7 @@ export default function ProductOptions({
             <Button
               type="button"
               variant="ghost"
-              className="rounded-none"
+              className="rounded-none cursor-pointer"
               onClick={() => updateQuantity(quantity - 1)}
             >
               <FiMinus />
@@ -119,7 +119,7 @@ export default function ProductOptions({
             <Button
               type="button"
               variant="ghost"
-              className="rounded-none"
+              className="rounded-none cursor-pointer"
               onClick={() => updateQuantity(quantity + 1)}
             >
               <FiPlus />
@@ -132,7 +132,11 @@ export default function ProductOptions({
         </div>
       </div>
 
-      <Button size="lg" className="w-full" disabled={stock === 0}>
+      <Button
+        size="lg"
+        className="w-full cursor-pointer"
+        disabled={stock === 0}
+      >
         {stock > 0 ? "Thêm vào giỏ hàng" : "Hết hàng"}
       </Button>
     </main>
