@@ -43,6 +43,5 @@ export async function getProducts(query: ProductQuery = {}) {
 }
 
 export async function getProductBySlug(slug: string) {
-  await new Promise((res) => setTimeout(res, 5000));
   return fetchApi<ProductDetail>(`/products/${slug}`);
 }
