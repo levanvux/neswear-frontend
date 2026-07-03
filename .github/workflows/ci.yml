@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - staging
   pull_request:
 
 permissions:
@@ -57,10 +58,18 @@ jobs:
             NEXT_PUBLIC_API_URL=${{ vars.NEXT_PUBLIC_API_URL }}
 
       - name: Trigger deploy repository
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'push'
         run: |
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            ENV="prod"
+          elif [ "${GITHUB_REF_NAME}" = "staging" ]; then
+            ENV="staging"
+          else
+            ENV="dev"
+          fi
+
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.DEPLOY_REPO_TOKEN }}" \
             https://api.github.com/repos/levanvux/neswear-deploy/dispatches \
-            -d '{"event_type":"deploy"}'
+            -d "{\"event_type\":\"deploy\",\"client_payload\":{\"environment\":\"$ENV\"}}"
