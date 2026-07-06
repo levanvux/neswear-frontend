@@ -65,7 +65,8 @@ jobs:
           elif [ "${GITHUB_REF_NAME}" = "staging" ]; then
             ENV="staging"
           else
-            ENV="dev"
+            echo "Develop branch - skip deployment"
+            exit 0
           fi
 
           curl -X POST \
