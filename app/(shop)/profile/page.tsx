@@ -77,8 +77,8 @@ export default function ProfilePage() {
                     key={index}
                     className="rounded-lg border p-4 text-gray-700"
                   >
-                    {address.street}, {address.ward}, {address.district},{" "}
-                    {address.city}
+                    {address.street}, {address.ward}, {address.city}{" "}
+                    {address.isDefault === true && "(Mặc định)"}
                   </div>
                 ))}
               </div>

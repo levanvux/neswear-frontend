@@ -1,18 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import toast from "react-hot-toast";
 
-import { Division } from "@/types/location";
-import { getDistricts, getProvinces, getWards } from "@/services/location";
-import LocationSelect from "@/components/LocationSelect";
+import { useAuth } from "@/contexts/AuthContext";
 import { register } from "@/services/auth";
+import AddressForm from "@/components/AddressForm";
 
 export default function RegisterPage() {
   const router = useRouter();
+
+  const { loading, user } = useAuth();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -20,60 +21,12 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [street, setStreet] = useState("");
 
-  const [provinces, setProvinces] = useState<Division[]>([]);
-  const [districts, setDistricts] = useState<Division[]>([]);
-  const [wards, setWards] = useState<Division[]>([]);
-
-  const [provinceName, setProvinceName] = useState("");
-  const [districtName, setDistrictName] = useState("");
-  const [wardName, setWardName] = useState("");
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const data = await getProvinces();
-        setProvinces(data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    load();
-  }, []);
-
-  useEffect(() => {
-    if (!provinceName) return;
-
-    async function loadDistricts() {
-      const province = provinces.find((p) => p.name === provinceName);
-      if (!province) {
-        return;
-      }
-
-      const data = await getDistricts(province.code);
-      setDistricts(data);
-    }
-
-    loadDistricts();
-  }, [provinceName, provinces]);
-
-  useEffect(() => {
-    if (!districtName) return;
-
-    async function loadWards() {
-      const district = districts.find((d) => d.name === districtName);
-      if (!district) {
-        return;
-      }
-
-      const data = await getWards(district.code);
-      setWards(data);
-    }
-
-    loadWards();
-  }, [districtName, districts]);
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    ward: "",
+  });
 
   const handleSubmit = async (
     e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>,
@@ -102,8 +55,10 @@ export default function RegisterPage() {
       return;
     }
 
-    const hasPartialAddress = street || provinceName;
-    const hasFullAddress = street && provinceName && districtName && wardName;
+    const { street, city, ward } = address;
+    const hasPartialAddress = street || city;
+    const hasFullAddress = street && city && ward;
+
     if (hasPartialAddress && !hasFullAddress) {
       toast.error("Vui lòng nhập đầy đủ địa chỉ");
       return;
@@ -121,9 +76,9 @@ export default function RegisterPage() {
             addresses: [
               {
                 street,
-                city: provinceName,
-                district: districtName,
-                ward: wardName,
+                city,
+                ward,
+                isDefault: true,
               },
             ],
           }
@@ -143,6 +98,12 @@ export default function RegisterPage() {
       }
     }
   };
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/");
+    }
+  }, [loading, user, router]);
 
   return (
     <main className="px-2 py-16">
@@ -234,68 +195,7 @@ export default function RegisterPage() {
 
           <h2 className="text-lg font-semibold">Địa chỉ (không bắt buộc)</h2>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Tên đường / Số nhà
-            </label>
-            <input
-              type="text"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
-              className="w-full rounded border px-3 py-2 outline-none focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Tỉnh / Thành phố
-            </label>
-
-            <LocationSelect
-              list={provinces}
-              divisionName={provinceName}
-              onChange={(name) => {
-                setProvinceName(name);
-
-                setDistrictName("");
-                setDistricts([]);
-
-                setWardName("");
-                setWards([]);
-              }}
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Quận / Huyện
-            </label>
-
-            <LocationSelect
-              list={districts}
-              divisionName={districtName}
-              onChange={(name) => {
-                setDistrictName(name);
-
-                setWardName("");
-                setWards([]);
-              }}
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Phường / Xã
-            </label>
-
-            <LocationSelect
-              list={wards}
-              divisionName={wardName}
-              onChange={(name) => {
-                setWardName(name);
-              }}
-            />
-          </div>
+          <AddressForm setAddress={setAddress} />
 
           <button
             type="submit"
