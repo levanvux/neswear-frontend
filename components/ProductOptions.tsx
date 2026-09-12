@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { ProductDetail } from "@/types/product";
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import SizeGuide from "./SizeGuide";
+import { ProductDetail } from "@/types/product";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCheckoutStore } from "@/stores/checkout.store";
+import { addCartItem } from "@/services/cart";
 
 export default function ProductOptions({
   product,
@@ -36,8 +43,79 @@ export default function ProductOptions({
     setQuantity(value);
   };
 
+  const { loading, accessToken } = useAuth();
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
+  const addCartItemMutation = useMutation({
+    mutationFn: (itemData: { productVariantId: number; quantity: number }) => {
+      return addCartItem(accessToken, itemData);
+    },
+
+    onSuccess: () => {
+      toast.success("Đã thêm vào giỏ hàng.");
+      queryClient.invalidateQueries({
+        queryKey: ["cart-items"],
+      });
+    },
+
+    onError: (err) => {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Đã có lỗi xảy ra.");
+      }
+    },
+  });
+
+  const handleAddCartItem = () => {
+    if (loading) {
+      return;
+    }
+
+    if (!accessToken) {
+      router.push("/login");
+      return;
+    }
+
+    const productVariantId = selectedVariant?.id;
+
+    if (!productVariantId) {
+      return;
+    }
+
+    addCartItemMutation.mutate({
+      productVariantId,
+      quantity: Math.min(stock, quantity),
+    });
+  };
+
+  const setBuyNowItem = useCheckoutStore((state) => state.setBuyNowItem);
+  const handleBuyNow = () => {
+    if (!selectedVariant) {
+      return;
+    }
+
+    setBuyNowItem({
+      productVariantId: selectedVariant.id,
+      quantity: Math.min(stock, quantity),
+      color: colors[colorIndex],
+      size: sizes[sizeIndex],
+      stock: selectedVariant.stock,
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+      productPrice: product.price,
+      productCategory: product.category,
+      thumbnailUrl: product.thumbnailUrl,
+    });
+
+    router.push(`/checkout`);
+  };
+
   return (
-    <main className="space-y-7">
+    <main className="space-y-5">
       <div>
         <p className="text-sm uppercase tracking-wider text-zinc-500">
           {product.category}
@@ -132,13 +210,36 @@ export default function ProductOptions({
         </div>
       </div>
 
-      <Button
-        size="lg"
-        className="w-full cursor-pointer"
-        disabled={stock === 0}
-      >
-        {stock > 0 ? "Thêm vào giỏ hàng" : "Hết hàng"}
-      </Button>
+      {stock > 0 ? (
+        <div className="space-y-2">
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full border-2 cursor-pointer"
+            onClick={handleAddCartItem}
+            disabled={addCartItemMutation.isPending}
+          >
+            {addCartItemMutation.isPending
+              ? "Đang thêm..."
+              : "Thêm vào giỏ hàng"}
+          </Button>
+
+          <Button
+            size="lg"
+            className="w-full cursor-pointer"
+            onClick={handleBuyNow}
+          >
+            Mua ngay
+          </Button>
+        </div>
+      ) : (
+        <Button
+          size="lg"
+          className="w-full cursor-not-allowed bg-gray-700 hover:bg-gray-700"
+        >
+          Hết hàng
+        </Button>
+      )}
     </main>
   );
 }
