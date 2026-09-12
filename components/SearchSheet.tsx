@@ -6,13 +6,13 @@ import { FiSearch } from "react-icons/fi";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-export default function SearchSheet() {
+export default function SearchSheet({ title = "search" }: { title?: string }) {
   const [keyword, setKeyword] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
     const href = keyword.trim()
@@ -29,7 +29,7 @@ export default function SearchSheet() {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <button>
-          <FiSearch className="hover:cursor-pointer" />
+          <FiSearch title={title} className="hover:cursor-pointer" />
         </button>
       </SheetTrigger>
 

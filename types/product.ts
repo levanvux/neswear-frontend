@@ -8,6 +8,17 @@ export interface ProductQuery {
   limit?: number;
 }
 
+export interface ProductDetail {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  category: string;
+  thumbnailUrl: string;
+  images: ProductImage[];
+  variants: ProductVariant[];
+}
+
 export interface ProductCard {
   id: number;
   name: string;
@@ -32,15 +43,4 @@ export interface ProductVariant {
   size: string;
   stock: number;
   productId: number;
-}
-
-export interface ProductDetail {
-  id: number;
-  name: string;
-  slug: string;
-  price: number;
-  category: string;
-  thumbnailKey: string;
-  images: ProductImage[];
-  variants: ProductVariant[];
 }

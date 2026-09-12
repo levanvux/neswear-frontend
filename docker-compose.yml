@@ -5,3 +5,9 @@
 #       - "3000:3000"
 #     env_file:
 #       - .env
+#     networks:
+#       - neswear_default
+
+# networks:
+#   neswear_default:
+#     external: true

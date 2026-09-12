@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
 const banners = [
   "/herobanner-1.png",
   "/hero-banner-2.png",
@@ -13,6 +15,8 @@ const banners = [
 ];
 
 export default function HeroSlider() {
+  const router = useRouter();
+
   return (
     <section>
       <Swiper
@@ -34,6 +38,7 @@ export default function HeroSlider() {
                 fill
                 priority={index === 0}
                 className="object-cover"
+                onClick={() => router.push("/products")}
               />
             </div>
           </SwiperSlide>

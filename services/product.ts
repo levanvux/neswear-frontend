@@ -1,7 +1,10 @@
 import { fetchApi } from "@/lib/api";
+import { PaginatedResponse } from "@/types/common";
 import { ProductCard, ProductDetail, ProductQuery } from "@/types/product";
 
-export async function getProducts(query: ProductQuery = {}) {
+export async function getProducts(
+  query: ProductQuery = {},
+): Promise<PaginatedResponse<ProductCard>> {
   const params = new URLSearchParams();
 
   if (query.search) {
@@ -34,12 +37,9 @@ export async function getProducts(query: ProductQuery = {}) {
 
   const queryString = params.toString();
 
-  return fetchApi<{
-    data: ProductCard[];
-    total: number;
-    page: number;
-    limit: number;
-  }>(`/products${queryString ? `?${queryString}` : ""}`);
+  return fetchApi<PaginatedResponse<ProductCard>>(
+    `/products${queryString ? `?${queryString}` : ""}`,
+  );
 }
 
 export async function getProductBySlug(slug: string) {

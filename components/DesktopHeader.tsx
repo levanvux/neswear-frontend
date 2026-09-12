@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
-import { FiHeart, FiShoppingBag, FiUser } from "react-icons/fi";
+import { FiShoppingBag, FiUser } from "react-icons/fi";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -46,7 +46,8 @@ export default function DesktopHeader() {
     <header className="tracking-wider hidden lg:block">
       <div className="flex justify-between bg-black text-white py-4 px-10 text-sm">
         <div>
-          <p>MIỄN PHÍ GIAO HÀNG CHO ĐƠN TỪ 499K</p>
+          {/* <p>MIỄN PHÍ GIAO HÀNG CHO ĐƠN TỪ 499K</p> */}
+          <p>MIỄN PHÍ GIAO HÀNG TOÀN QUỐC</p>
         </div>
 
         <div className="flex divide-x divide-gray-500">
@@ -106,20 +107,27 @@ export default function DesktopHeader() {
         </nav>
 
         <div className="flex gap-7 text-2xl items-center">
-          <SearchSheet />
+          <SearchSheet title="search" />
 
-          <FiHeart className="hover:cursor-pointer" />
+          {/* <FiHeart className="hover:cursor-pointer" /> */}
 
-          <FiShoppingBag className="hover:cursor-pointer" />
+          <Link href="/cart" className="hover:cursor-pointer">
+            <FiShoppingBag title="cart" />
+          </Link>
 
           <div ref={dropdownRef} className="relative">
             {!user ? (
               <FiUser
+                title="click to see options"
                 className="hover:cursor-pointer"
                 onClick={() => setOpenUserActions(!openUserActions)}
               />
             ) : (
-              <Avatar onClick={() => setOpenUserActions(!openUserActions)}>
+              <Avatar
+                title="click to see options"
+                className="hover:cursor-pointer"
+                onClick={() => setOpenUserActions(!openUserActions)}
+              >
                 <AvatarImage src={user.avatarUrl} alt="Avatar" />
                 <AvatarFallback>
                   {`${user.firstName[0]}${user.lastName[0]}`}
@@ -128,7 +136,7 @@ export default function DesktopHeader() {
             )}
 
             {openUserActions && (
-              <div className="absolute right-0 top-full mt-2 w-40 rounded-lg border bg-white shadow-lg z-50 text-xl">
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-white shadow-lg z-50 text-base">
                 {!user ? (
                   <>
                     <Link
@@ -154,6 +162,26 @@ export default function DesktopHeader() {
                 ) : (
                   <>
                     <Link
+                      href="/cart"
+                      onClick={() => {
+                        setOpenUserActions(false);
+                      }}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Giỏ hàng
+                    </Link>
+
+                    <Link
+                      href="/orders"
+                      onClick={() => {
+                        setOpenUserActions(false);
+                      }}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Đơn hàng của tôi
+                    </Link>
+
+                    <Link
                       href="/profile"
                       onClick={() => {
                         setOpenUserActions(false);
@@ -162,8 +190,9 @@ export default function DesktopHeader() {
                     >
                       Hồ sơ
                     </Link>
+
                     <button
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="w-full text-left cursor-pointer rounded-br-lg rounded-bl-lg block px-4 py-2 hover:bg-gray-100"
                       onClick={() => {
                         setOpenUserActions(false);
                         setOpenLogout(true);

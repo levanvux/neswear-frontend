@@ -46,8 +46,9 @@ export default function MobileHeader() {
 
   return (
     <header className="tracking-wider block lg:hidden">
-      <div className="flex justify-between bg-black text-white py-4 px-10 text-sm">
-        MIỄN PHÍ GIAO HÀNG CHO ĐƠN TỪ 499K
+      <div className="flex justify-between bg-black text-white py-4 px-8 text-sm">
+        {/* MIỄN PHÍ GIAO HÀNG CHO ĐƠN TỪ 499K */}
+        MIỄN PHÍ GIAO HÀNG TOÀN QUỐC
       </div>
 
       <div className="relative flex justify-between px-4 py-5  bg-white shadow-md">
@@ -87,7 +88,7 @@ export default function MobileHeader() {
             )}
 
             {openUserActions && (
-              <div className="absolute right-0 top-full mt-2 w-40 rounded-lg border bg-white shadow-lg z-50 text-xl">
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-white shadow-lg z-50 text-base">
                 {!user ? (
                   <>
                     <Link
@@ -113,6 +114,26 @@ export default function MobileHeader() {
                 ) : (
                   <>
                     <Link
+                      href="/cart"
+                      onClick={() => {
+                        setOpenUserActions(false);
+                      }}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Giỏ hàng
+                    </Link>
+
+                    <Link
+                      href="/orders"
+                      onClick={() => {
+                        setOpenUserActions(false);
+                      }}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Đơn hàng của tôi
+                    </Link>
+
+                    <Link
                       href="/profile"
                       onClick={() => {
                         setOpenUserActions(false);
@@ -123,7 +144,7 @@ export default function MobileHeader() {
                     </Link>
 
                     <button
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="w-full text-left block px-4 py-2 hover:bg-gray-100"
                       onClick={() => {
                         setOpenUserActions(false);
                         setOpenLogout(true);
@@ -156,22 +177,25 @@ export default function MobileHeader() {
           <div className="fixed top-0 left-0 z-50 h-screen w-4/6 bg-white p-6">
             <ul className="space-y-6 font-semibold">
               <li>
-                <Link
-                  href="/collections/quan"
-                  onClick={() => setOpenMenu(false)}
-                >
+                <Link href="/cart" onClick={() => setOpenMenu(false)}>
                   GIỎ HÀNG
                 </Link>
               </li>
 
               <li>
+                <Link href="/orders" onClick={() => setOpenMenu(false)}>
+                  ĐƠN HÀNG CỦA TÔI
+                </Link>
+              </li>
+
+              {/* <li>
                 <Link
                   href="/collections/ao-khoac"
                   onClick={() => setOpenMenu(false)}
                 >
                   YÊU THÍCH
                 </Link>
-              </li>
+              </li> */}
 
               <hr />
 

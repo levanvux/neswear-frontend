@@ -11,12 +11,14 @@ import {
 import { Division } from "@/types/location";
 
 type LocationSelectProps = {
+  placeholder: string;
   list: Division[];
   divisionName: string;
   onChange: (name: string) => void;
 };
 
 export default function LocationSelect({
+  placeholder,
   list,
   divisionName,
   onChange,
@@ -32,7 +34,7 @@ export default function LocationSelect({
         onChange(divisionName ?? "");
       }}
     >
-      <ComboboxInput placeholder="Chọn tỉnh / thành phố" />
+      <ComboboxInput placeholder={placeholder} />
       <ComboboxContent>
         <ComboboxEmpty>Không tìm thấy.</ComboboxEmpty>
         <ComboboxList>
