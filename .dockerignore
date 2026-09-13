@@ -9,7 +9,7 @@ build
 .gitignore
 .github
 
-# Environment variables (Tránh lọt secrets)
+# Environment variables
 .env
 .env.*
 
