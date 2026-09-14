@@ -30,18 +30,18 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Build project
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+          CLOUD_STORAGE_HOSTNAME: ${{ vars.CLOUD_STORAGE_HOSTNAME }}
+
       - name: Extract metadata
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: metadata
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-
-      - name: Build project
-        run: npm run build
-        env:
-          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
-          CLOUD_STORAGE_HOSTNAME: ${{ vars.CLOUD_STORAGE_HOSTNAME }}
 
       - name: Login to GHCR
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
