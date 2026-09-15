@@ -20,7 +20,16 @@ export default async function ProductsPage({
     limit: params.limit ? Number(params.limit) : undefined,
   };
 
-  const res = await getProducts(query);
+  let res;
+  try {
+    res = await getProducts(query);
+  } catch (err) {
+    console.error(err);
+  }
+
+  if (!res) {
+    return <p>Không thể tải sản phẩm!</p>;
+  }
 
   const totalPages = Math.ceil(res.total / res.limit);
 
