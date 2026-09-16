@@ -8,10 +8,6 @@ export async function fetchApi<T>(
   endpoint: string,
   options?: RequestInit,
 ): Promise<T> {
-  console.log("API_URL:", API_URL);
-  console.log("endpoint:", endpoint);
-  console.log("URL:", `${API_URL}${endpoint}`);
-
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     credentials: "include",
